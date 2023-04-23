@@ -24,7 +24,7 @@ export const getUserApi = async (t)=>{
 
 
 const userStore = create(
-    persist((set,get)=>({
+    persist((set)=>({
         user:{},
         setUser:(profile)=>set(()=>({user:{...profile}})),
         logout:()=>set(()=>({user:{}}))

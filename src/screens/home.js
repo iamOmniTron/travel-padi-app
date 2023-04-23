@@ -1,18 +1,18 @@
 import {Text,View,TouchableOpacity, TextInput, ScrollView} from "react-native"
 import { FontAwesome5 } from "@expo/vector-icons"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { useEffect,useState,useContext } from "react";
-import LocationContext from "../context/locationContext";
+import { useEffect, } from "react";
 import { getcurrentLocationApi } from "../utils/helper";
 import axios from "axios";
 import { ToastError } from "../utils/toast";
 import { API_KEY } from "../defaults/utils";
+import currentLocationStore from "../store/currentLocationStore";
 
 
 
 export default function Home({navigation}){
+    const currentLocation = currentLocationStore(state=>state.currentLocation);
 
-    const {location:currentLocationInfo} = useContext(LocationContext);
     const handleSearchBar = async (text)=>{
         const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&type=city&format=json&filter=countrycode:ng&apiKey=${API_KEY}`
         try{
@@ -24,13 +24,12 @@ export default function Home({navigation}){
     }
 
     useEffect(()=>{
-        console.log(currentLocationInfo);
-        // const {longitude,latitude} = currentLocationInfo.coords;
-        // const getLocation = async ()=>{
-        //     const response = await getcurrentLocationApi(longitude,latitude);
-        //     console.log(response);
-        // }
-        // getLocation
+        const {longitude,latitude} = currentLocation?.coords;
+        const getLocation = async ()=>{
+            const response = await getcurrentLocationApi(longitude,latitude);
+            console.log(response)
+        }
+        getLocation();
     },[])
 
     return (
@@ -46,7 +45,7 @@ export default function Home({navigation}){
                 <TextInput placeholder="search a location" className="px-2" onChangeText={handleSearchBar}/>
                 </View>
             </View>
-            <ScrollView showsVerticalScrollIndicator={false} className="pb-10">
+            <ScrollView showsVerticalScrollIndicator={false} className="mb-20">
             {/* Image area */}
             <View className="mt-10">
                 <View className="h-52 w-full rounded-md bg-white">
@@ -68,6 +67,7 @@ export default function Home({navigation}){
                 </View>
             </View>
             {/* Details Section */}
+            <Text className="text-white mt-10 font-bold text-lg">Recommended</Text>
             <View className="mt-3 bg-white rounded-md h-36 px-2">
                 <Text className="font-semibold">
                     This is your current location, this is also a mock data

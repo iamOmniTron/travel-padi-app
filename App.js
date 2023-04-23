@@ -14,6 +14,8 @@ import * as Location from "expo-location";
 import Toast from "react-native-toast-message";
 import userStore from './src/store/userStore';
 import Place from './src/screens/place';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import currentLocationStore from './src/store/currentLocationStore';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,7 +37,7 @@ const AuthStack = ()=>{
 
 const ButtomTabs = ()=>{
   return(
-    <Tab.Navigator screenOptions={({route})=>({
+    <Tab.Navigator initialRouteName='Home' screenOptions={({route})=>({
       tabBarIcon: ({ color, size, focused }) => {
         let iconName;
 
@@ -69,31 +71,30 @@ const ButtomTabs = ()=>{
 }
 
 export default function App() {
-  const [location,setLocation] = useState(null);
   const currentUser = userStore(state=>state.user);
+  const setCurrentLocation = currentLocationStore(state=>state.setCurrentLocation);
+
   console.log(currentUser);
   useEffect(()=>{
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         throw "Access to location denied";
-        return;
       }
 
       let currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation(currentLocation);
+      console.log(currentLocation)
+      setCurrentLocation(currentLocation);
     })();
   },[])
   return (
     <>
-    <LocationContext.Provider value={location}>
       <NavigationWrapper>
         {
-          Object.keys(currentUser).length < 1 ?
-          <AuthStack/>:<ButtomTabs/>
+          Object.keys(currentUser).length > 1 ?
+          <ButtomTabs/>:<AuthStack/>
         }
       </NavigationWrapper>
-    </LocationContext.Provider>
     <Toast/>
     </>
   );

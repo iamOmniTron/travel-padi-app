@@ -23,13 +23,14 @@ export default function Login({navigation}){
         }
         const {data} = await login(payload);
         await AsyncStorage.setItem(AUTH_TOKEN_NAME,data);
-        console.log(data)
         // Call to user profile api
         const profile = await getUserApi(data);
         console.log(profile)
         setUser(profile);
         setLoading(false);
-        return navigation.navigate("Home");
+        setTimeout(() => {
+            return navigation.navigate("Home");
+        }, 2000);
     }
 
     // useEffect(()=>{

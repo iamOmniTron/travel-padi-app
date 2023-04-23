@@ -54,7 +54,7 @@ export default function Explore({navigation}){
                 <Text className="text-white text-lg">Search Results</Text>
             </View>
             <ScrollView showsVerticalScrollIndicator={false} className="mt-7">
-                <PlacesContainer data={DUMMY}/>
+                <PlacesContainer data={places}/>
             </ScrollView>
         </SafeAreaView>
     )
