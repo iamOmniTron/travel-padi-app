@@ -29,7 +29,6 @@ const AuthStack = ()=>{
     }}>
       <Stack.Screen name='Login' component={Login}/>
       <Stack.Screen name='Signup' component={Signup}/>
-      <Stack.Screen name="Place" component={Place}/>
     </Stack.Navigator>
   )
 }
@@ -66,15 +65,16 @@ const ButtomTabs = ()=>{
     <Tab.Screen name='Explore' component={Explore}/>
     <Tab.Screen name="Home" component={Home}/>
     <Tab.Screen name='Profile' component={Profile}/>
+    <Tab.Screen name="Place" component={Place} options={{tabBarLabel:"",
+      tabBarButton:()=>null,
+      tabBarVisible:false}}/>
   </Tab.Navigator>
   )
 }
 
 export default function App() {
-  const currentUser = userStore(state=>state.user);
+  const isLoggedIn = userStore(state=>state.isLoggedIn);
   const setCurrentLocation = currentLocationStore(state=>state.setCurrentLocation);
-
-  console.log(currentUser);
   useEffect(()=>{
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -83,7 +83,6 @@ export default function App() {
       }
 
       let currentLocation = await Location.getCurrentPositionAsync({});
-      console.log(currentLocation)
       setCurrentLocation(currentLocation);
     })();
   },[])
@@ -91,7 +90,7 @@ export default function App() {
     <>
       <NavigationWrapper>
         {
-          Object.keys(currentUser).length > 1 ?
+          isLoggedIn ?
           <ButtomTabs/>:<AuthStack/>
         }
       </NavigationWrapper>

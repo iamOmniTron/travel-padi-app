@@ -14,6 +14,7 @@ export default function Login({navigation}){
     
     const login = useLogin();
     const setUser = userStore(state=>state.setUser);
+    const setIsLoggedIn = userStore(state=>state.login);
 
     const handleSubmit = async ()=>{
         setLoading(true)
@@ -23,26 +24,17 @@ export default function Login({navigation}){
         }
         const {data} = await login(payload);
         await AsyncStorage.setItem(AUTH_TOKEN_NAME,data);
+        console.log(data)
         // Call to user profile api
-        const profile = await getUserApi(data);
+        const {data:profile} = await getUserApi(data);
         console.log(profile)
         setUser(profile);
+        setIsLoggedIn();
         setLoading(false);
         setTimeout(() => {
             return navigation.navigate("Home");
         }, 2000);
     }
-
-    // useEffect(()=>{
-    //     const getPlaces = async ()=>{
-    //         const country = "Nigeria"
-    //         const {data} = await axios.get(`https://nominatim.openstreetmap.org/search?country=${country}&format=json`);
-
-    //         console.log(data)
-    //     }
-    //     getPlaces();
-    // },[])
-
 
     return (
         <SafeAreaView className="flex-1 minh-screen w-screen  bg-white">

@@ -1,7 +1,7 @@
 import {Text,View,TouchableOpacity, TextInput, ScrollView} from "react-native"
 import { FontAwesome5 } from "@expo/vector-icons"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { useEffect, } from "react";
+import { useEffect, useState, } from "react";
 import { getcurrentLocationApi } from "../utils/helper";
 import axios from "axios";
 import { ToastError } from "../utils/toast";
@@ -11,26 +11,18 @@ import currentLocationStore from "../store/currentLocationStore";
 
 
 export default function Home({navigation}){
-    const currentLocation = currentLocationStore(state=>state.currentLocation);
-
-    const handleSearchBar = async (text)=>{
-        const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&type=city&format=json&filter=countrycode:ng&apiKey=${API_KEY}`
-        try{
-            const {data} = await axios.get(`${url}`);
-            console.log(data.results);
-        }catch(err){
-            ToastError("Network error");
-        }
-    }
-
-    useEffect(()=>{
-        const {longitude,latitude} = currentLocation?.coords;
-        const getLocation = async ()=>{
-            const response = await getcurrentLocationApi(longitude,latitude);
-            console.log(response)
-        }
-        getLocation();
-    },[])
+    const [currentLocation,setCurrentLocation] = useState({});
+    
+    // useEffect(()=>{
+    //     const currentLocationInfo = currentLocationStore(state=>state.currentLocation);
+    //     const {longitude,latitude} = currentLocationInfo?.coords;
+    //     const getLocation = async ()=>{
+    //         const response = await getcurrentLocationApi(longitude,latitude);
+    //         console.log(response);
+    //         setCurrentLocation({...response});
+    //     }
+    //     getLocation();
+    // },[])
 
     return (
         <SafeAreaView className="flex-1 bg-blue-300 px-4 pt-4">
@@ -40,10 +32,10 @@ export default function Home({navigation}){
                         <FontAwesome5 name="user-circle" size={30} color="#3f3f3f" />
                     </TouchableOpacity>
                 </View>
-                <View className="flex flex-row items-center bg-white px-2 rounded-md w-72">
+                <TouchableOpacity className="flex flex-row items-center bg-white px-2 rounded-md w-72" onPress={()=>navigation.navigate("Explore")}>
                     <FontAwesome5 name="search" size={15} color="#3f3f3f" />
-                <TextInput placeholder="search a location" className="px-2" onChangeText={handleSearchBar}/>
-                </View>
+                {/* <TextInput placeholder="search a location" className="px-2"/> */}
+                </TouchableOpacity>
             </View>
             <ScrollView showsVerticalScrollIndicator={false} className="mb-20">
             {/* Image area */}
@@ -63,15 +55,19 @@ export default function Home({navigation}){
                 <View className="flex">
                     {/* Weather section */}
                     <FontAwesome5 name="cloud-rain" size={24} color="lightgray" />
-                    <Text className="text-[10px]">12 deg</Text>
+                    <Text className="text-[10px] text-white">12 deg</Text>
                 </View>
             </View>
             {/* Details Section */}
             <Text className="text-white mt-10 font-bold text-lg">Recommended</Text>
             <View className="mt-3 bg-white rounded-md h-36 px-2">
-                <Text className="font-semibold">
-                    This is your current location, this is also a mock data
-                </Text>
+                
+            </View>
+            <View className="mt-3 bg-white rounded-md h-36 px-2">
+                
+            </View>
+            <View className="mt-3 bg-white rounded-md h-36 px-2">
+                
             </View>
             </ScrollView>
         </SafeAreaView>

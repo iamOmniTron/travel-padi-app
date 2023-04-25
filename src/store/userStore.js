@@ -12,7 +12,7 @@ export const getUserApi = async (t)=>{
     try{
         const {data} = await axios.get(`${SERVER_URL}/profile`,{
             headers:{
-                "Authorization":`Bearer  ${t}`
+                "Authorization":`Bearer ${t}`
             }
         });
         console.log(data);
@@ -27,7 +27,9 @@ const userStore = create(
     persist((set)=>({
         user:{},
         setUser:(profile)=>set(()=>({user:{...profile}})),
-        logout:()=>set(()=>({user:{}}))
+        logout:()=>set(()=>({user:{},isLoggedIn:false})),
+        isLoggedIn:false,
+        login:()=>set(()=>({isLoggedIn:true}))
     }),
     {
         name:USER_STORE_KEY,

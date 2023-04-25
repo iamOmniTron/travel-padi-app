@@ -1,29 +1,24 @@
-import {View,Text,TextInput, SafeAreaView, TouchableOpacity, ScrollView} from "react-native";
+import {View,Text,TextInput,Image, SafeAreaView, TouchableOpacity, ScrollView} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import PlacesContainer from "../components/placesContainer";
 import {useState} from "react";
 import { API_KEY } from "../defaults/utils";
 import { ToastError } from "../utils/toast";
 import axios from "axios";
+import { THINKING_FACE } from "../defaults/images";
 
 
-const DUMMY = [
-    "Abuja",
-    "Kano",
-    "Ibadan",
-    "Ondo",
-    "Benue",
-    "Abuja",
-    "Kano",
-    "Ibadan",
-    "Ondo",
-    "Benue",
-    "Abuja",
-    "Kano",
-    "Ibadan",
-    "Ondo",
-    "Benue"
-]
+const NoResult = ()=>{
+
+
+    return(
+        <View className="w-full h-60">
+            <Image source={THINKING_FACE} className="w-full h-full object-contain"/>
+        </View>
+    )
+}
+
+
 
 export default function Explore({navigation}){
     const [places,setPlaces] = useState([]);
@@ -32,7 +27,6 @@ export default function Explore({navigation}){
         const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&type=city&format=json&filter=countrycode:ng&apiKey=${API_KEY}`
         try{
             const {data} = await axios.get(`${url}`);
-            console.log(data.results);
             setPlaces(data.results)
         }catch(err){
             console.log(err);
@@ -53,9 +47,12 @@ export default function Explore({navigation}){
             <View className="mt-4">
                 <Text className="text-white text-lg">Search Results</Text>
             </View>
-            <ScrollView showsVerticalScrollIndicator={false} className="mt-7">
-                <PlacesContainer data={places}/>
-            </ScrollView>
+            <View className="mt-7">
+                {
+                    places.length <1 ? <NoResult/> :
+                    <PlacesContainer data={places}/>
+                }
+            </View>
         </SafeAreaView>
     )
 }

@@ -60,11 +60,10 @@ export const useSignup = ()=>{
 export const useGetProfile = ()=>{
 
     const getProfile = async (payload)=>{
-        const token = await getToken();
         try{
             const {data} = await axios.get(`${SERVER_URL}/profile`,{
                 headers:{
-                    "Authorization":`Bearer ${token}`
+                    Authorization:`Bearer ${payload}`
                 }
             });
             if(!data){
