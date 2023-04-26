@@ -1,28 +1,48 @@
-import {Text,View,TouchableOpacity, TextInput, ScrollView} from "react-native"
+import {Text,View,TouchableOpacity, TextInput, ScrollView, Image} from "react-native"
 import { FontAwesome5 } from "@expo/vector-icons"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useEffect, useState, } from "react";
-import { getcurrentLocationApi } from "../utils/helper";
+import { getcurrentLocationApi, getcurrentLocationWeather } from "../utils/helper";
 import axios from "axios";
+import * as Location from "expo-location";
 import { ToastError } from "../utils/toast";
 import { API_KEY } from "../defaults/utils";
 import currentLocationStore from "../store/currentLocationStore";
+import { WELCOME } from "../defaults/images";
+import { getNearbyPlaces } from "../hooks/places";
 
 
 
 export default function Home({navigation}){
-    const [currentLocation,setCurrentLocation] = useState({});
+    const [places,setPlaces] = useState([]);
+    const [currentWeather,setCurrentWeather] = useState("");
+    const currentLocationInfo = currentLocationStore(state=>state.currentLocation);
+    const setCurrentLocationInfo =  currentLocationStore(state=>state.setCurrentLocation);
+
     
-    // useEffect(()=>{
-    //     const currentLocationInfo = currentLocationStore(state=>state.currentLocation);
-    //     const {longitude,latitude} = currentLocationInfo?.coords;
-    //     const getLocation = async ()=>{
-    //         const response = await getcurrentLocationApi(longitude,latitude);
-    //         console.log(response);
-    //         setCurrentLocation({...response});
-    //     }
-    //     getLocation();
-    // },[])
+    
+
+
+    useEffect(()=>{
+
+        const init = async()=>{
+            try{
+                if(!currentLocationInfo.coords){
+                    let currentLocation = await Location.getCurrentPositionAsync({});
+                    setCurrentLocationInfo(currentLocation);
+                }
+                const {longitude,latitude} = currentLocationInfo.coords;
+                const data = await getNearbyPlaces(latitude,longitude);
+                setPlaces(data);
+                const weatherData = await getcurrentLocationWeather(latitude,longitude);
+                console.log(weatherData);
+            }catch(err){
+                console.log(err);
+                ToastError("Network error");
+            }
+            init();
+        }
+    },[])
 
     return (
         <SafeAreaView className="flex-1 bg-blue-300 px-4 pt-4">
@@ -41,7 +61,7 @@ export default function Home({navigation}){
             {/* Image area */}
             <View className="mt-10">
                 <View className="h-52 w-full rounded-md bg-white">
-
+                    <Image source={WELCOME} className="w-full h-full object-contain"/>
                 </View>
             </View>
             {/* Info section */}

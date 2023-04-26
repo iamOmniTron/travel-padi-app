@@ -23,11 +23,9 @@ export default function Login({navigation}){
             password
         }
         const {data} = await login(payload);
-        await AsyncStorage.setItem(AUTH_TOKEN_NAME,data);
-        console.log(data)
+        await AsyncStorage.setItem(AUTH_TOKEN_NAME,JSON.stringify(data));
         // Call to user profile api
         const {data:profile} = await getUserApi(data);
-        console.log(profile)
         setUser(profile);
         setIsLoggedIn();
         setLoading(false);

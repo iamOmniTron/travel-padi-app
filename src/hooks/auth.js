@@ -21,6 +21,7 @@ export const useLogin = ()=>{
                 return;
             }
             ToastSuccess("login successful");
+            console.log(data);
             return data;
         }catch(err){
             console.log(err)

@@ -41,7 +41,7 @@ export default function Bookmark({navigation}){
             }
         }
         getBookmarks();
-    },[])
+    })
 
     return(
         <SafeAreaView className="flex-1 bg-blue-300 px-4 pt-4">
