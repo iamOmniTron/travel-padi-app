@@ -78,13 +78,14 @@ export const useRating = ()=>{
                 ToastError("network error");
                 return;
             }
-            if(!response.success){
-                ToastError(data.message);
-                return;
-            }
+            // if(!response.success){
+            //     ToastError(response.message);
+            //     return;
+            // }
             ToastSuccess("Review successfully");
             return response.message;
         }catch(err){
+            console.log("rating error",err)
             ToastError(err.message??"Something went wrong")
         }
     }

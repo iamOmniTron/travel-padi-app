@@ -32,7 +32,11 @@ export const getPlaceDetails = async (googlePlaceId)=>{
 export const getPlaceImage = async (photoRef,width) =>{
     try{
         const url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${width}&photo_reference=${photoRef}&key=${GOOGLE_API_KEY}`
-        const {data} = await axios.get(url);
+        const {data} = await axios.get(url,{
+            headers:{
+                'Content-Type': "image/svg+xml" 
+            }
+        });
         return data;
     }catch(err){
         console.log("error",err);

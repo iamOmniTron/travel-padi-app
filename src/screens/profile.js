@@ -1,56 +1,41 @@
-import {Text,View,SafeAreaView,TouchableOpacity,TextInput, ScrollView} from "react-native"
-import { FontAwesome5,Ionicons } from "@expo/vector-icons";
-import userStore from "../store/userStore";
+import {Text,Image,View,SafeAreaView,TouchableOpacity,TextInput, ScrollView} from "react-native"
+import { Ionicons } from "@expo/vector-icons";
+import { AVATAR } from "../defaults/images";
 
 
 
 
 export default function Profile({navigation}){
-    const currentUser = userStore(state=>state.user);
-    const isLoggedIn = userStore(state=>state.isLoggedIn);
-
-    const logout = userStore(state=>state.logout);
-    console.log(isLoggedIn)
-
-    const goToLogin = ()=>navigation.navigate("Login")
-
-    const handleLogout = ()=>{
-        logout();
-        setTimeout(goToLogin,2000);
-    }
-    
     return (
-        <SafeAreaView className="flex-1 bg-blue-300 px-4 pt-4">
-            <View className="flex flex-row mb-2" style={{elevation:100}}>
-                <View className="mr-2 flex-none">
-                <TouchableOpacity onPress={()=>navigation.goBack()}>
-                    <Ionicons name="chevron-back" size={25} color="white" />
+        <SafeAreaView className="flex-1">
+            <View className="flex flex-row mt-2 px-2">
+                <TouchableOpacity onPress={navigation.goBack}>
+                    <Ionicons name="chevron-back" size={30} color={"gray"} />
                 </TouchableOpacity>
+            </View>
+            <View className="flex items-center w-full mt-10">
+                <View className="h-28 w-28 rounded-full" style={{elevation:10}}>
+                    <Image source={AVATAR} className="object-fit rounded-full h-full w-full"/>
+                </View>
+                <View className="flex flex-row justify-between items-center mt-5">
+                    <Ionicons name="person" size={24} color="gray"/>
+                     <Text className="text-base text-gray-500 font-bold ml-4">Abdulmumeen</Text>
+                </View>
+                <View className="flex flex-row justify-between items-center mt-5">
+                    <Ionicons name="mail-outline" size={24} color="gray"/>
+                     <Text className="text-base text-gray-500 font-bold ml-4">abdul@gmail.com</Text>
+                </View>
+                <View className="flex flex-row justify-between items-center mt-5">
+                    <Ionicons name="call-outline" size={24} color="gray"/>
+                     <Text className="text-base text-gray-500 font-bold ml-4">07081320894</Text>
                 </View>
             </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View className="w-full flex-1">
-                    <View className=" flex justify-center items-center my-4">
-                    <FontAwesome5 name="user-circle" size={100} color="gray" />
-                    </View>
-                    <View className="my-5 mx-3 mt-6 bg-white rounded-md p-4">
-                        <View className="flex flex-row border-b-2 items-center my-4">
-                            <Text className="text-lg font-bold">name:</Text><Text className="ml-4 text-base">{currentUser.name}</Text>
-                        </View>
-                        <View className="border-b-2 flex flex-row my-4">
-                            <Text className="text-lg font-bold">email:</Text><Text className="ml-4 text-base">{currentUser.email}</Text>
-                        </View>
-                        <View className="border-b-2 flex flex-row my-4">
-                        <Text className="text-lg font-bold">phone:</Text><Text className="ml-4 text-base">{currentUser.phone}</Text>
-                        </View>
-                    </View>
-                    <View className="flex-1 items-center">
-                        <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-md" onPress={handleLogout}>
-                            <Text className="text-lg text-white">Logout</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </ScrollView>
+            <View className="flex justify-center items-center h-2/5">
+                <TouchableOpacity className="flex flex-row w-36 items-center justify-center rounded-md px-3 py-2 bg-gray-500">
+                    <Text className="font-bold text-base text-white mr-2">Logout</Text>
+                    <Ionicons name="log-out-outline" size={20} color="white"/>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }

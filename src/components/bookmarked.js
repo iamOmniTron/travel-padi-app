@@ -16,9 +16,9 @@ import { ScrollView } from "react-native-gesture-handler";
 const Review = ({review})=>{
 
     return(
-        <View>
-            <Text>Ratings: {review.ratings}</Text>
-            <Text>Review: {review.review}</Text>
+        <View className="bg-white rounded-md pl-3 pt-3 my-4 w-full h-24">
+            <Text className="text-sm font-bold">Ratings: {review.ratings}</Text>
+            <Text className="text-bas font-bold">Review: {review.review}</Text>
         </View>
     )
 }
@@ -47,7 +47,6 @@ export default function Bookmarked({navigation,route}){
                 resizeMode: 'contain',
             }} source={{uri:`data:image/png;base64,${bookmarked.state}`}}/>
         </View>
-        <ScrollView showsVerticalScrollIndicator={false}>
         <View className="mt-4">
             <Text className="text-lg font-bold text-white">Information:</Text>
             <View className="ml-3 mt-2">
@@ -73,7 +72,6 @@ export default function Bookmarked({navigation,route}){
                 />
                 
         </View>
-        </ScrollView>
         {/* <TouchableOpacity className="mt-8 rounded-md bg-blue-500 px-4 py-4" onPress={()=>setIsOpened(true)}>
             <Text className="text-white font-bold text-24 text-center">Make a review</Text>
         </TouchableOpacity> */}

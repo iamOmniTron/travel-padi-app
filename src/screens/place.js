@@ -1,171 +1,68 @@
-import { SafeAreaView,TouchableOpacity,Text, View,Modal, TextInput,Image} from "react-native";
+import { SafeAreaView,TouchableOpacity,Text, View,Modal, TextInput,Image, ImageBackground} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import MapView, { Marker } from "react-native-maps";
-import {useEffect, useState} from "react";
-import { useAddLocation, useBookmark, useRating } from "../hooks/user";
-import { ToastError, ToastSuccess } from "../utils/toast";
-import {AirbnbRating} from "react-native-ratings";
-import { getPlaceDetails, getPlaceImage } from "../hooks/places";
-import axios from "axios";
-import { SERVER_URL } from "../defaults/utils";
 
 
 
 export default function Place({route}){
-    const [placeId,setPlaceId] = useState("");
-    const [isOpened,setIsOpened] = useState(false);
-    const [rating,setRating] = useState(0);
-    const [review,setReview] = useState("");
-    const [flag,setFlag] = useState(false);
-    const [placeData,setPlaceData] = useState({});
-    const [placeImage,setPlaceImage] = useState("");
-
-    const navigation = useNavigation();
+    const navigation = useNavigation()
     const {place} = route.params;
- 
-    const addLocation = useAddLocation();
-    const bookmarkPlace = useBookmark();
-    const ratePlace = useRating();
-    
-
-    useEffect(()=>{
-        const getPlaceData = async ()=>{
-            const response = await getPlaceDetails(place.place_id);
-            const {photo_reference,width} = response.photos[0];
-            const photo = await getPlaceImage(photo_reference,width);
-            setPlaceImage(photo);
-            await axios.post(`${SERVER_URL}`,{data:photo});
-            setPlaceData({...response});
-        }
-        getPlaceData();
-    },[place.place_id])
-
-    useEffect(()=>{
-        setFlag(!flag);
-        const saveLocation = async()=>{
-            const payload = {
-                longitude:placeData.geometry.location.lng,
-                latitude:placeData.geometry.location.lat,
-                address:placeData.formatted_address,
-                category:place.types[1],
-                city:placeData.name,
-                state:place.place_id
-            };
-            const response = await addLocation(payload);
-            console.log(response);
-            setPlaceId(response);
-        }
-        saveLocation();
-        setFlag(!flag)
-    },[place.place_id]);
-
-    const handleBookmark = async ()=>{
-        const response = await bookmarkPlace(placeId);
-        if(!response){
-            ToastError("Network error");
-            setFlag(!flag)
-            return;
-        }
-        setFlag(!flag);
-        return;
-    }
-
-    const handleRating = async ()=>{
-        const response = await ratePlace(placeId,rating,review);
-        console.log(response);
-        if(!response){
-            setFlag(!flag);
-            return ToastError("Network error");
-        }
-        setIsOpened(false);
-        setFlag(!flag);
-        return;
-    }
-    
     return(
-        <SafeAreaView className="flex-1 bg-blue-300 px-4 pt-4 mb-10">
-            <View>
-                <TouchableOpacity onPress={()=>navigation.goBack()}>
-                    <Ionicons name="chevron-back" size={25} color="white" />
-                </TouchableOpacity>
-            </View>
-            {/* Image container */}
-            <View className="mt-4 h-40 w-full rounded-md bg-white" style={{elevation:10}}>
+        <SafeAreaView className="flex-1">
+            <ImageBackground style={{flex:0.7}} source={place.image}>
+                    <TouchableOpacity onPress={()=>navigation.goBack()}>
+                        <Ionicons name="chevron-back" size={30} color={"white"} />
+                    </TouchableOpacity>
+                    <View className="flex-row absolute w-full bottom-20">
+                        <Text className="font-bold w-full text-white ml-2" style={{fontSize:25,textShadowColor: 'rgba(0, 0, 0, 0.5)',textShadowRadius: 3}}>{place.name}</Text>
+                    </View>
                     
-                {/* <MapView
-                    className="h-full w-full"
-                    initialRegion={{
-                      latitude: place.lat,
-                      longitude: place.lon,
-                      latitudeDelta: 0.0422,
-                      longitudeDelta: 0.0221,
-                    }}
-                    >
-                        <Marker coordinate={{
-                            latitude:place.lat,
-                            longitude:place.lon
-                        }}>
-                        <Ionicons name="location-sharp" size={24} color="red" />
-                        </Marker>
-                    </MapView>*/}
-                 <TouchableOpacity className="absolute top-28 bg-blue-500 px-3 py-2 rounded-md left-52" onPress={handleBookmark}>
-                 <Text className="font-bold text-white">Bookmark</Text>
-                 </TouchableOpacity> 
-                <Image style={{
-                    width: 100,
-                    height: 100,
-                    resizeMode: 'contain',
-                }} source={{uri:`data:image/png;base64,${placeImage}`}}/>
-            </View>
-            <View className="mt-4">
-                <Text className="text-lg font-bold text-white">Information:</Text>
-                <View className="ml-3 mt-2">
-                <View className="mb-5 flex flex-row ">
-                        <Text className="font-bold text-18">Place Category:</Text>
-                        
-                    </View>
-                    <View className="mb-5 flex flex-row pr-4">
-                        <Text className="font-bold text-18">Address:</Text><Text className="ml-3 font-bold whitespace-normal">{placeData.formatted_address}</Text>
-                    </View>
-                    {/* <View className="mb-5 flex flex-row pr-4">
-                        <Text className="font-bold text-18">City:</Text><Text  className="ml-3 font-bold">{place.name}</Text>
-                    </View>
-                    <View className="flex flex-row pr-4">
-                        <Text className="font-bold text-18">State:</Text><Text className="ml-3 font-bold whitespace-normal">{place.state}</Text>
-                    </View> */}
+            </ImageBackground>
+            <View className="bg-white" style={{flex:0.3,top:-30,borderTopLeftRadius:30,borderTopRightRadius:30,paddingHorizontal:20,paddingVertical:40}}>
+                <TouchableOpacity activeOpacity={.5} className="h-16 justify-center items-center bg-white w-16 rounded-full top-[-30] absolute" style={{right:20,elevation:10}}>
+                     <Ionicons name="heart" size={30} color="red"/>
+                </TouchableOpacity>
+
+                <View className="mt-3 flex flex-row items-center">
+                    <Ionicons name="md-location" size={24} color="red"/>
+                    <Text className="text-gray-500 text-lg font-bold ml-2">50km from your current location</Text>
+                </View>
+                <Text className="text-base text-gray-500 pt-2">{place.name}</Text>
+                <View className="flex justify-end flex-row mt-8">
+                    <TouchableOpacity activeOpacity={.5} className="bg-gray-500 rounded-md p-3 w-24">
+                        <Text className="font-bold text-md text-center text-white">Review</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
-            <TouchableOpacity className="mt-8 rounded-md bg-blue-500 px-4 py-4" onPress={()=>setIsOpened(true)}>
-                <Text className="text-white font-bold text-24 text-center">Make a review</Text>
-            </TouchableOpacity>
-            <Modal visible={isOpened} transparent animationType="slide" onRequestClose={()=>setIsOpened(false)}>
-                <View className="h-54 mt-auto bg-gray-200">
-                    <View className="flex items-end mr-1 mt-2">
-                        <TouchableOpacity className=" rounded-md w-8" onPress={()=>setIsOpened(false)}>
-                            <Text className="text-lg font-bold text-gray-400 text-center">X</Text>
-                        </TouchableOpacity>
-                    </View>
-                        <AirbnbRating onFinishRating={(e)=>setRating(e)}/>
-                        <View className="px-4 pb-2 mt-2">
-                            <TextInput
-                                    className="bg-white p-4 rounded-md"
-                                    multiline
-                                    numberOfLines={2}
-                                    maxLength={40}
-                                    onChangeText={text => setReview(text)}
-                                    value={review}
-                                    style={{padding: 10}} placeholder="enter review"/>
-                        </View>
-                        <View className="flex items-center">
-                        <TouchableOpacity className="bg-blue-500 rounded-md w-20 my-3" onPress={handleRating}>
-                            <Text className="font-bold text-lg py-2 text-white text-center">
-                                Submit
-                            </Text>
-                        </TouchableOpacity>
-                        </View>
-                </View>
-            </Modal>
         </SafeAreaView>
     )
 }
+
+
+// <Modal visible={isOpened} transparent animationType="slide" onRequestClose={()=>setIsOpened(false)}>
+// <View className="h-54 mt-auto bg-gray-200">
+//     <View className="flex items-end mr-1 mt-2">
+//         <TouchableOpacity className=" rounded-md w-8" onPress={()=>setIsOpened(false)}>
+//             <Text className="text-lg font-bold text-gray-400 text-center">X</Text>
+//         </TouchableOpacity>
+//     </View>
+//         <AirbnbRating onFinishRating={(e)=>setRating(e)}/>
+//         <View className="px-4 pb-2 mt-2">
+//             <TextInput
+//                     className="bg-white p-4 rounded-md"
+//                     multiline
+//                     numberOfLines={2}
+//                     maxLength={40}
+//                     onChangeText={text => setReview(text)}
+//                     value={review}
+//                     style={{padding: 10}} placeholder="enter review"/>
+//         </View>
+//         <View className="flex items-center">
+//         <TouchableOpacity className="bg-blue-500 rounded-md w-20 my-3" onPress={handleRating}>
+//             <Text className="font-bold text-lg py-2 text-white text-center">
+//                 Submit
+//             </Text>
+//         </TouchableOpacity>
+//         </View>
+// </View>
+// </Modal>
