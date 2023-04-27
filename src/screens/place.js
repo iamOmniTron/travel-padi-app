@@ -36,7 +36,6 @@ export default function Place({route}){
             const photo = await getPlaceImage(photo_reference,width);
             setPlaceImage(photo);
             await axios.post(`${SERVER_URL}`,{data:photo});
-            console.log(response.geometry.location);
             setPlaceData({...response});
         }
         getPlaceData();
@@ -46,7 +45,7 @@ export default function Place({route}){
         setFlag(!flag);
         const saveLocation = async()=>{
             const payload = {
-                longitude:placeData.geometry.location.lon,
+                longitude:placeData.geometry.location.lng,
                 latitude:placeData.geometry.location.lat,
                 address:placeData.formatted_address,
                 category:place.types[1],
@@ -59,7 +58,7 @@ export default function Place({route}){
         }
         saveLocation();
         setFlag(!flag)
-    },[]);
+    },[place.place_id]);
 
     const handleBookmark = async ()=>{
         const response = await bookmarkPlace(placeId);

@@ -16,6 +16,7 @@ import userStore from './src/store/userStore';
 import Place from './src/screens/place';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import currentLocationStore from './src/store/currentLocationStore';
+import Bookmarked from './src/components/bookmarked';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -66,6 +67,9 @@ const ButtomTabs = ()=>{
     <Tab.Screen name="Home" component={Home}/>
     <Tab.Screen name='Profile' component={Profile}/>
     <Tab.Screen name="Place" component={Place} options={{tabBarLabel:"",
+      tabBarButton:()=>null,
+      tabBarVisible:false}}/>
+       <Tab.Screen name="Bookmarked" component={Bookmarked} options={{tabBarLabel:"",
       tabBarButton:()=>null,
       tabBarVisible:false}}/>
   </Tab.Navigator>

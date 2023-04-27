@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native"
 export default function PlaceItem({place}){
     const navigation = useNavigation();
     return(
-        <TouchableOpacity className="bg-white rounded-md h-20  my-2 px-4 flex-row justify-between" onPress={()=>navigation.navigate("Place",{place})}>
+        <TouchableOpacity className="bg-white rounded-md h-20  my-2 px-4 flex-row justify-between" onPress={()=>navigation.navigate("Bookmarked",{bookmarked:place})}>
             <View className="flex flex-row items-center">
                 <View>
                     <Ionicons name="location-sharp" size={30} color="red" />

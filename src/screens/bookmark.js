@@ -23,13 +23,12 @@ export default function Bookmark({navigation}){
                         Authorization:`Bearer ${JSON.parse(token)}`
                     }
                 });
-                console.log(response);
                 if(!response){
                     ToastError("network error");
                     return;
                 }
                 if(!response.success){
-                    ToastError(data.message);
+                    ToastError(response.message);
                     return;
                 }
                 console.log(response.data);
