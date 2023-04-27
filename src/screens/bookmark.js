@@ -20,7 +20,7 @@ export default function Bookmark({navigation}){
                 const token = await AsyncStorage.getItem(AUTH_TOKEN_NAME);
                 const {data:response} = await axios.get(`${SERVER_URL}/bookmarks`,{
                     headers:{
-                        Authorization:`Bearer ${token}`
+                        Authorization:`Bearer ${JSON.parse(token)}`
                     }
                 });
                 console.log(response);

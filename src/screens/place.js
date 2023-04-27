@@ -1,4 +1,4 @@
-import { SafeAreaView,TouchableOpacity,Text, View,Modal, TextInput} from "react-native";
+import { SafeAreaView,TouchableOpacity,Text, View,Modal, TextInput,Image} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import MapView, { Marker } from "react-native-maps";
@@ -7,6 +7,8 @@ import { useAddLocation, useBookmark, useRating } from "../hooks/user";
 import { ToastError, ToastSuccess } from "../utils/toast";
 import {AirbnbRating} from "react-native-ratings";
 import { getPlaceDetails, getPlaceImage } from "../hooks/places";
+import axios from "axios";
+import { SERVER_URL } from "../defaults/utils";
 
 
 
@@ -21,40 +23,43 @@ export default function Place({route}){
 
     const navigation = useNavigation();
     const {place} = route.params;
-
+ 
     const addLocation = useAddLocation();
     const bookmarkPlace = useBookmark();
     const ratePlace = useRating();
+    
 
     useEffect(()=>{
         const getPlaceData = async ()=>{
             const response = await getPlaceDetails(place.place_id);
             const {photo_reference,width} = response.photos[0];
             const photo = await getPlaceImage(photo_reference,width);
-            console.log("place image",photo);
+            setPlaceImage(photo);
+            await axios.post(`${SERVER_URL}`,{data:photo});
+            console.log(response.geometry.location);
             setPlaceData({...response});
         }
         getPlaceData();
-    },[place])
+    },[place.place_id])
 
-    // useEffect(()=>{
-    //     setFlag(!flag);
-    //     const saveLocation = async()=>{
-    //         const payload = {
-    //             longitude:place.lon,
-    //             latitude:place.lat,
-    //             address:place.formatted,
-    //             category:place.category,
-    //             state:place.state,
-    //             city:place.city
-    //         };
-    //         const response = await addLocation(payload);
-    //         console.log(response);
-    //         setPlaceId(response);
-    //     }
-    //     saveLocation();
-    //     setFlag(!flag)
-    // },[]);
+    useEffect(()=>{
+        setFlag(!flag);
+        const saveLocation = async()=>{
+            const payload = {
+                longitude:placeData.geometry.location.lon,
+                latitude:placeData.geometry.location.lat,
+                address:placeData.formatted_address,
+                category:place.types[1],
+                city:placeData.name,
+                state:place.place_id
+            };
+            const response = await addLocation(payload);
+            console.log(response);
+            setPlaceId(response);
+        }
+        saveLocation();
+        setFlag(!flag)
+    },[]);
 
     const handleBookmark = async ()=>{
         const response = await bookmarkPlace(placeId);
@@ -104,28 +109,34 @@ export default function Place({route}){
                         }}>
                         <Ionicons name="location-sharp" size={24} color="red" />
                         </Marker>
-                    </MapView>
-                <TouchableOpacity className="absolute top-28 bg-blue-500 px-3 py-2 rounded-md left-52" onPress={handleBookmark}>
-                    <Text className="font-bold text-white">Bookmark</Text>
-                </TouchableOpacity> */}
+                    </MapView>*/}
+                 <TouchableOpacity className="absolute top-28 bg-blue-500 px-3 py-2 rounded-md left-52" onPress={handleBookmark}>
+                 <Text className="font-bold text-white">Bookmark</Text>
+                 </TouchableOpacity> 
+                <Image style={{
+                    width: 100,
+                    height: 100,
+                    resizeMode: 'contain',
+                }} source={{uri:`data:image/png;base64,${placeImage}`}}/>
             </View>
-            {/* <View className="mt-4">
+            <View className="mt-4">
                 <Text className="text-lg font-bold text-white">Information:</Text>
                 <View className="ml-3 mt-2">
                 <View className="mb-5 flex flex-row ">
-                        <Text className="font-bold text-18">Place Category:</Text><Text  className="ml-3 font-bold">{place.category}</Text>
+                        <Text className="font-bold text-18">Place Category:</Text>
+                        
                     </View>
                     <View className="mb-5 flex flex-row pr-4">
-                        <Text className="font-bold text-18">Address:</Text><Text className="ml-3 font-bold whitespace-normal">{place.formatted}</Text>
+                        <Text className="font-bold text-18">Address:</Text><Text className="ml-3 font-bold whitespace-normal">{placeData.formatted_address}</Text>
                     </View>
-                    <View className="mb-5 flex flex-row pr-4">
-                        <Text className="font-bold text-18">City:</Text><Text  className="ml-3 font-bold">{place.county}</Text>
+                    {/* <View className="mb-5 flex flex-row pr-4">
+                        <Text className="font-bold text-18">City:</Text><Text  className="ml-3 font-bold">{place.name}</Text>
                     </View>
                     <View className="flex flex-row pr-4">
                         <Text className="font-bold text-18">State:</Text><Text className="ml-3 font-bold whitespace-normal">{place.state}</Text>
-                    </View>
+                    </View> */}
                 </View>
-            </View> */}
+            </View>
             <TouchableOpacity className="mt-8 rounded-md bg-blue-500 px-4 py-4" onPress={()=>setIsOpened(true)}>
                 <Text className="text-white font-bold text-24 text-center">Make a review</Text>
             </TouchableOpacity>

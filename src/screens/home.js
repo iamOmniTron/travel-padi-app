@@ -27,15 +27,16 @@ export default function Home({navigation}){
 
         const init = async()=>{
             try{
-                if(!currentLocationInfo.coords){
+                if(!currentLocationInfo?.coords){
                     let currentLocation = await Location.getCurrentPositionAsync({});
                     setCurrentLocationInfo(currentLocation);
                 }
                 const {longitude,latitude} = currentLocationInfo.coords;
                 const data = await getNearbyPlaces(latitude,longitude);
                 setPlaces(data);
+                console.log(data)
                 const weatherData = await getcurrentLocationWeather(latitude,longitude);
-                console.log(weatherData);
+                // console.log(weatherData);
             }catch(err){
                 console.log(err);
                 ToastError("Network error");

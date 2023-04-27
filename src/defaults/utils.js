@@ -10,7 +10,7 @@ export const COLORS = {
     BLACK:"#3F3F3F"
 }
 
-export const SERVER_URL = "https://fead-129-205-107-67.eu.ngrok.io/api";
+export const SERVER_URL = "https://c477-105-112-225-87.eu.ngrok.io/api";
 
 export const AUTH_TOKEN_NAME = "@travel-padi-auth-token";
 
