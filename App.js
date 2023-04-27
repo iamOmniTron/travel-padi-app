@@ -16,7 +16,6 @@ import userStore from './src/store/userStore';
 import Place from './src/screens/place';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import currentLocationStore from './src/store/currentLocationStore';
-import Bookmarked from './src/components/bookmarked';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -46,10 +45,8 @@ const ButtomTabs = ()=>{
         } else if (route.name === 'Profile') {
           iconName = 'person';
         } else if (route.name === "Bookmark"){
-          iconName = "bookmark";
-        } else if (route.name === "Explore"){
-          iconName = "telescope"
-        }
+          iconName = "heart";
+        } 
         return (
           <Octicons
             name={iconName}
@@ -63,15 +60,8 @@ const ButtomTabs = ()=>{
       tabBarStyle: { position: 'absolute' },
     })}>
       <Tab.Screen name='Bookmark' component={Bookmark}/>
-    <Tab.Screen name='Explore' component={Explore}/>
     <Tab.Screen name="Home" component={Home}/>
     <Tab.Screen name='Profile' component={Profile}/>
-    <Tab.Screen name="Place" component={Place} options={{tabBarLabel:"",
-      tabBarButton:()=>null,
-      tabBarVisible:false}}/>
-       <Tab.Screen name="Bookmarked" component={Bookmarked} options={{tabBarLabel:"",
-      tabBarButton:()=>null,
-      tabBarVisible:false}}/>
   </Tab.Navigator>
   )
 }
