@@ -43,6 +43,7 @@ export default function Place({route}){
             return;
         }
         ToastSuccess("review added successfully");
+        setIsOpened(false);
         return;
     }
 
