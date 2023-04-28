@@ -7,8 +7,7 @@ import { useFetchBookmarked } from "../hooks/user";
 
 
 export default function BookmarkedPlacesContainer(){
-    const [loading,setIsLoading] = useState(false);
-
+    
     const bookmarks = useFetchBookmarked();
     return(
         <ScrollView className="px-2 mt-4 flex mb-10" showsVerticalScrollIndicator={false}>

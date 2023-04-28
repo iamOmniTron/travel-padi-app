@@ -105,7 +105,6 @@ export const useFetchBookmarked = (flag)=>{
                         Authorization:`Bearer ${token._j}`
                     }
                 });
-                console.log(response);
                 if(!response){
                     ToastError("network error");
                     return;
@@ -131,6 +130,9 @@ export const useFetchRecommended = ()=>{
 
 
     useEffect(()=>{
+
+
+        
         const getRecommendeds = async ()=>{
             try{
                 const {data:response} = await axios.get(`${SERVER_URL}/recommended-places`,{
@@ -138,13 +140,13 @@ export const useFetchRecommended = ()=>{
                         Authorization:`Bearer ${token._j}`
                     }
                 });
-                console.log(response);
+                console.log("recommended",response);
                 if(!response){
                     ToastError("network error");
                     return;
                 }
                 if(!response.success){
-                    ToastError(data.message);
+                    ToastError(response.message);
                     return;
                 }
                 setPlaces(response.data);
@@ -155,5 +157,5 @@ export const useFetchRecommended = ()=>{
         getRecommendeds();
     },[]);
 
-    return bookmarks;
+    return places;
 }

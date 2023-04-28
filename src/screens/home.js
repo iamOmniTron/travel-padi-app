@@ -20,9 +20,9 @@ import RecommendedPlacesContainer from "../components/recommendedPlacesContainer
 export default function Home({navigation}){
     return (
         <SafeAreaView className="flex-1 px-4 pt-4">
-            <ScrollView className="" showsVerticalScrollIndicator={false}>
+            <ScrollView className="" showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always">
                 {/* Search bar */}
-                <View className="mb-4">
+                <View>
                         <GooglePlacesAutocomplete
                             placeholder='Type to search a place'
                             onPress={(data,details) => {
@@ -39,6 +39,7 @@ export default function Home({navigation}){
                             fetchDetails={true}
                             onFail={(e)=>console.log(e)}
                             onTimeout={()=>console.log("time out")}
+                            Lis
                             />
                 </View>
                 <View className="w-full px-5 flex justify-between flex-row mt-10">
