@@ -30,7 +30,7 @@ export default function RecommendedPlacesContainer(){
     return(
         <ScrollView showsVerticalScrollIndicator={false} className="mb-10 px-3">
                 {
-                    recommendedResults.map((place,idx)=><RecommendedPlace place={place} key={idx}/>)
+                    MOCK_PLACES.map((place,idx)=><RecommendedPlace place={place} key={idx}/>)
                 }
         </ScrollView>
     )
