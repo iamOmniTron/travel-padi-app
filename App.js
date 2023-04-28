@@ -57,11 +57,13 @@ const ButtomTabs = ()=>{
       },
       tabBarShowLabel:false,
       headerShown:false,
-      tabBarStyle: { position: 'absolute' },
     })}>
       <Tab.Screen name='Bookmark' component={Bookmark}/>
     <Tab.Screen name="Home" component={Home}/>
     <Tab.Screen name='Profile' component={Profile}/>
+    <Tab.Screen name='Place' component={Place} options={{tabBarLabel:"",
+      tabBarButton:()=>null,
+      tabBarVisible:false}}/>
   </Tab.Navigator>
   )
 }

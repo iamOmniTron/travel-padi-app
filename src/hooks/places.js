@@ -32,14 +32,29 @@ export const getPlaceDetails = async (googlePlaceId)=>{
 export const getPlaceImage = async (photoRef,width) =>{
     try{
         const url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${width}&photo_reference=${photoRef}&key=${GOOGLE_API_KEY}`
-        const {data} = await axios.get(url,{
+    
+        const {request} = await axios.get(url,{
             headers:{
-                'Content-Type': "image/svg+xml" 
+                "Content-Type":"image/jpeg"
             }
         });
-        return data;
+        return request.responseURL;
     }catch(err){
         console.log("error",err);
+        ToastError("Network error");
+    }
+}
+
+
+export const getDistance = async (myLon,myLat,placeLon,placeLat)=>{
+    try{
+        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${myLat},${myLon}&destination=${placeLat},${placeLon}&key=${GOOGLE_API_KEY}`;
+        console.log(url)
+        const {data} = await axios.get(url);
+        console.log("result",data)
+        return data;
+    }catch(err){
+        console.log(err);
         ToastError("Network error");
     }
 }

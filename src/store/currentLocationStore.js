@@ -7,7 +7,6 @@ import { LOCATION_STORE_KEY } from "../defaults/utils";
 
 const currentLocationStore = create(
     persist((set)=>({
-
         currentLocation:{},
         setCurrentLocation:(loc)=>set(()=>({currentLocation:{...loc}})),
         clearLocation:()=>set(()=>({currentLocation:{}}))

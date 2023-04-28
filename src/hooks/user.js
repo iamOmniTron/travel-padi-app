@@ -93,7 +93,7 @@ export const useRating = ()=>{
 }
 
 
-export const useFetchBookmarked = ()=>{
+export const useFetchBookmarked = (flag)=>{
     const [bookmarks,setBookmarks] = useState([]);
 
 
@@ -120,7 +120,7 @@ export const useFetchBookmarked = ()=>{
             }
         }
         getBookmarks();
-    },[]);
+    },[flag]);
 
     return bookmarks;
 }
