@@ -2,6 +2,8 @@ import { FlatList,ScrollView,Text,View} from "react-native";
 import { ABUJA, KANO, LAGOS, PH } from "../defaults/images"
 import RecommendedPlace from "./recommendedPlaceCard";
 import { useFetchRecommended } from "../hooks/user";
+import { useContext } from "react";
+import RefreshContext from "../context/refreshContext";
 
 export const MOCK_PLACES = [
     {
@@ -24,8 +26,9 @@ export const MOCK_PLACES = [
 
 
 
-export default function RecommendedPlacesContainer({flag}){
+export default function RecommendedPlacesContainer(){
 
+    const {flag} = useContext(RefreshContext);
     const recommendedResults = useFetchRecommended(flag);
     return(
         <View showsVerticalScrollIndicator={false} className="mb-10 px-3">

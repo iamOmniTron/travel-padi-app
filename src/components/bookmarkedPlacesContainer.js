@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import BookmarkedPlace from "./bookmarkedPlace";
 import { MOCK_PLACES } from "./recommendedPlacesContainer";
 import { ScrollView } from "react-native";
 import { useFetchBookmarked } from "../hooks/user";
+import RefreshContext from "../context/refreshContext";
 
 
 
 export default function BookmarkedPlacesContainer(){
+    const {flag} = useContext(RefreshContext)
     
-    const bookmarks = useFetchBookmarked();
+    const bookmarks = useFetchBookmarked(flag);
     return(
         <ScrollView className="px-2 mt-4 flex mb-10" showsVerticalScrollIndicator={false}>
             {

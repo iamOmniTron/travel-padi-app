@@ -2,11 +2,12 @@ import { SafeAreaView,TouchableOpacity,Text, View,Modal,Image, TextInput, ImageB
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { AirbnbRating } from "react-native-ratings";
-import { useState,useEffect } from "react";
+import { useState,useEffect, useContext } from "react";
 import { getDistance, getPlaceDetails, getPlaceImage } from "../hooks/places";
 import currentLocationStore from "../store/currentLocationStore";
 import { useAddLocation, useBookmark, useRating } from "../hooks/user";
 import { ToastError, ToastSuccess } from "../utils/toast";
+import RefreshContext from "../context/refreshContext";
 
 
 export default function Place({route}){
@@ -17,6 +18,8 @@ export default function Place({route}){
     const [loading,setIsLoading] = useState(false);
     const [rating,setRating] = useState(0);
     const [review,setReview] = useState("");
+
+    const {setFlag} = useContext(RefreshContext);
 
     // const {coords} = currentLocationStore(state=>state.currentLocation);
     // console.log("my location data",coords);
@@ -33,6 +36,7 @@ export default function Place({route}){
             return;
         }
         ToastSuccess("Location bookmarkes successfully");
+        setFlag(f=>!f);
         return;
     }
 
@@ -43,6 +47,7 @@ export default function Place({route}){
             return;
         }
         ToastSuccess("review added successfully");
+        setFlag(f=>!f);
         setIsOpened(false);
         return;
     }
@@ -66,6 +71,7 @@ export default function Place({route}){
             }
             const addLocationResponse = await addLocation(payload);
             setCurrentPlaceRef(addLocationResponse);
+            setFlag(f=>!f);
             setIsLoading(true);
         }
         init();

@@ -16,6 +16,7 @@ import userStore from './src/store/userStore';
 import Place from './src/screens/place';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import currentLocationStore from './src/store/currentLocationStore';
+import RefreshContext from './src/context/refreshContext';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -69,6 +70,7 @@ const ButtomTabs = ()=>{
 }
 
 export default function App() {
+  const [flag,setFlag] = useState(false);
   const isLoggedIn = userStore(state=>state.isLoggedIn);
   const setCurrentLocation = currentLocationStore(state=>state.setCurrentLocation);
   useEffect(()=>{
@@ -84,6 +86,7 @@ export default function App() {
   },[])
   return (
     <>
+    <RefreshContext.Provider value={{flag,setFlag}}>
       <NavigationWrapper>
         {
           isLoggedIn ?
@@ -91,6 +94,7 @@ export default function App() {
         }
       </NavigationWrapper>
     <Toast/>
+    </RefreshContext.Provider>
     </>
   );
 }

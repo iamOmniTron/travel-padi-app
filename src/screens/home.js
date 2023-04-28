@@ -17,12 +17,7 @@ import RecommendedPlacesContainer from "../components/recommendedPlacesContainer
 
 
 
-export default function Home({navigation}){
-    const [flag,setFlag] = useState(false);
-
-    useEffect(()=>{
-        setFlag(!flag)
-    },[])
+export default function Home({navigation,route}){
     return (
         <SafeAreaView className="flex-1 px-4 pt-4">
             <ScrollView className="" showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="always">
@@ -56,7 +51,7 @@ export default function Home({navigation}){
                 <Text className="font-bold text-lg mt-5 text-gray-700">places</Text>
                 <HomePlacesContainer/>
                 <Text className="font-bold text-lg mt-2 text-gray-700">Recommended</Text>
-            <RecommendedPlacesContainer flag={flag}/>
+            <RecommendedPlacesContainer/>
             </ScrollView>
         </SafeAreaView>
     )
