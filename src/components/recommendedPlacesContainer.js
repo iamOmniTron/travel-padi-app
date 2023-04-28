@@ -1,4 +1,4 @@
-import { FlatList,Text,View} from "react-native";
+import { FlatList,ScrollView,Text,View} from "react-native";
 import { ABUJA, KANO, LAGOS, PH } from "../defaults/images"
 import RecommendedPlace from "./recommendedPlaceCard";
 import { useFetchRecommended } from "../hooks/user";
@@ -28,10 +28,10 @@ export default function RecommendedPlacesContainer(){
 
     const recommendedResults = useFetchRecommended();
     return(
-        <View className="mb-10 px-3">
+        <ScrollView showsVerticalScrollIndicator={false} className="mb-10 px-3">
                 {
                     recommendedResults.map((place,idx)=><RecommendedPlace place={place} key={idx}/>)
                 }
-        </View>
+        </ScrollView>
     )
 }
