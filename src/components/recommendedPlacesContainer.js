@@ -24,14 +24,14 @@ export const MOCK_PLACES = [
 
 
 
-export default function RecommendedPlacesContainer(){
+export default function RecommendedPlacesContainer({flag}){
 
-    const recommendedResults = useFetchRecommended();
+    const recommendedResults = useFetchRecommended(flag);
     return(
-        <ScrollView showsVerticalScrollIndicator={false} className="mb-10 px-3">
+        <View showsVerticalScrollIndicator={false} className="mb-10 px-3">
                 {
-                    MOCK_PLACES.map((place,idx)=><RecommendedPlace place={place} key={idx}/>)
+                    recommendedResults.map((place,idx)=><RecommendedPlace place={place} key={idx}/>)
                 }
-        </ScrollView>
+        </View>
     )
 }

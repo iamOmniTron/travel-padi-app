@@ -99,6 +99,8 @@ export const useFetchBookmarked = (flag)=>{
 
     useEffect(()=>{
         const getBookmarks = async ()=>{
+
+            console.log(token);
             try{
                 const {data:response} = await axios.get(`${SERVER_URL}/bookmarks`,{
                     headers:{
@@ -125,14 +127,12 @@ export const useFetchBookmarked = (flag)=>{
 }
 
 
-export const useFetchRecommended = ()=>{
+export const useFetchRecommended = (flag)=>{
     const [places,setPlaces] = useState([]);
 
+    console.log(token)
 
     useEffect(()=>{
-
-
-        
         const getRecommendeds = async ()=>{
             try{
                 const {data:response} = await axios.get(`${SERVER_URL}/recommended-places`,{
@@ -155,7 +155,7 @@ export const useFetchRecommended = ()=>{
             }
         }
         getRecommendeds();
-    },[]);
+    },[flag]);
 
     return places;
 }
