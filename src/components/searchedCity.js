@@ -17,7 +17,6 @@ export default function SearchedCity({route}){
 
 
     const place = route.params;
-    console.log(place)
 
     useEffect(()=>{
         const getImage = async ()=>{
@@ -54,7 +53,7 @@ export default function SearchedCity({route}){
             </View>
             <View className="px-3">
                 <Text className="font-bold text-base">
-                  {type}s in {place.formatted_address}
+                  {(type).replace("_"," ")}s in {place.formatted_address}
                 </Text>
             </View>
             <ScrollView className="my-5 px-2" horizontal showsHorizontalScrollIndicator={false}>
@@ -62,6 +61,9 @@ export default function SearchedCity({route}){
                     <Center type="resturant" icon="fast-food-outline" callback={()=>setTypeCB("resturant")}/>
                     <Center type="hospital" icon="medical-outline" callback={()=>setTypeCB("hospital")}/>
                     <Center type="hotel" icon="home-outline" callback={()=>setTypeCB("lodging")}/>
+                    <Center type="gym" icon="barbell" callback={()=>setTypeCB("gym")}/>
+                    <Center type="police" icon="flag" callback={()=>setTypeCB("police")}/>
+                    <Center type="store" icon="cart" callback={()=>setTypeCB("shopping_mall")}/>
             </ScrollView>
             </View>
             <View className="mt-2">

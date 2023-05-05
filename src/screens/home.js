@@ -71,6 +71,9 @@ export default function Home({navigation,route}){
                     <Center type="resturant" icon="fast-food-outline" callback={()=>setTypeCB("resturant")}/>
                     <Center type="hospital" icon="medical-outline" callback={()=>setTypeCB("hospital")}/>
                     <Center type="hotel" icon="home-outline" callback={()=>setTypeCB("lodging")}/>
+                    <Center type="gym" icon="barbell" callback={()=>setTypeCB("gym")}/>
+                    <Center type="police" icon="flag" callback={()=>setTypeCB("police")}/>
+                    <Center type="store" icon="cart" callback={()=>setTypeCB("shopping_mall")}/>
                 </ScrollView>
                 <Text className="font-bold text-lg mt-5 text-gray-700">Nearby places</Text>
                 {

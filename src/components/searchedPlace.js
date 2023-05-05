@@ -16,6 +16,7 @@ export default function SearchedPlace({route}){
     const [currentPlaceRef,setCurrentPlaceRef] = useState("");
 
     const place = route.params;
+    console.log(place)
 
     const bookmark = useBookmark();
     const rate = useRating();
@@ -86,7 +87,10 @@ export default function SearchedPlace({route}){
                 }
             </View>
             <View className="mt-3 px-3 flex">
+                <View className="flex flex-row items-center space-x-2">
                 <Text className="font-extrabold text-base">{place.name}</Text>
+                <Text className={`${place.opening_hours.open_now?"text-green-500":"text-red-500"}`}>{place.opening_hours && place.opening_hours.open_now? "Currently Open":"Currently Closed"}</Text>
+                </View>
                 <View className="mt-2 flex flex-row items-center">
                     <Text className="font-bold mr-3">{place.rating}</Text>
                     <AirbnbRating
@@ -99,12 +103,16 @@ export default function SearchedPlace({route}){
                         ({place.user_ratings_total})
                     </Text>
                 </View>
-                <Text>{place.types.find((t)=>!t.includes("_"))}</Text>
-                <View className="w-full my-8 flex items-center">
-                    <View className=" w-11/12 rounded-md h-20 shadow-md bg-white flex flex-row justify-around items-center">
+                <Text className="font-bold capitalize">{place.types.find((t)=>!t.includes("_"))}</Text>
+                <View className="w-full my-2 flex items-center">
+                    <View className=" w-11/12 rounded-md h-16 shadow-md bg-white flex flex-row justify-around items-center">
                         <TouchableOpacity activeOpacity={.7} className="flex items-center" onPress={handleBookmark}>
-                            <Ionicons name="heart" size={30} color={"red"}/>
+                            <Ionicons name="heart" size={30} color={"gray"}/>
                             <Text>Bookmark</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={.7} className="flex items-center">
+                            <Ionicons name="map" size={30} color={"gray"}/>
+                            <Text>Directions</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={()=>setIsOpened(true)} className="flex items-center">
                             <Ionicons name="chatbox-ellipses" size={30} color={"gray"}/>
@@ -115,6 +123,10 @@ export default function SearchedPlace({route}){
                 <View className="flex flex-row">
                     <Ionicons name="location" color="red" size={24}/>
                     <Text className="text-sm">{place.vicinity}</Text>
+                </View>
+                <View className="flex flex-row">
+                    <Ionicons name="call" size={24} color={"blue"}/>
+                    <Text className="text-sm">{place?.formatted_phone_number}</Text>
                 </View>
             </View>
             <Modal visible={isOpened} transparent animationType="slide" onRequestClose={()=>setIsOpened(false)}>

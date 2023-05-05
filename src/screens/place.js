@@ -59,6 +59,7 @@ export default function Place({route}){
             const data = await getPlaceDetails(place_id);
             // const {geometry:{location}} = data;
             setPlaceData(data);
+            console.log(data.opening_hours);
             const {width,photo_reference} = data.photos[0];
             const placeImage = await getPlaceImage(photo_reference,width);
             setPicture(placeImage)

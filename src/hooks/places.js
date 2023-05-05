@@ -5,9 +5,8 @@ import axios from "axios";
 
 export const getNearbyPlaces = async (lat,lon,type="tourist_attraction")=>{
         try{
-            const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%${lon}&radius=1500&type=${type}&key=${GOOGLE_API_KEY}`;
+            const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%${lon}&radius=50000&type=${type}&key=${GOOGLE_API_KEY}`;
             const {data} = await axios.get(url);
-            console.log(data)
             return data?.results;
         }catch(err){
             console.log(err);
@@ -18,7 +17,7 @@ export const getNearbyPlaces = async (lat,lon,type="tourist_attraction")=>{
 
 export const getPlaceDetails = async (googlePlaceId)=>{
     try{
-        const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${googlePlaceId}&fields=name%2Cadr_address%2Cphoto%2Cformatted_address%2Cgeometry%2Ctype%2Crating%2Creviews&key=${GOOGLE_API_KEY}`;
+        const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${googlePlaceId}&fields=opening_hours%2Cname%2Cadr_address%2Cphoto%2Cformatted_address%2Cgeometry%2Ctype%2Crating%2Creviews%2Cformatted_phone_number&key=${GOOGLE_API_KEY}`;
         const {data} = await axios.get(url);
         return data?.result;
     }catch(err){
@@ -49,7 +48,6 @@ export const getPlaceImage = async (photoRef,width) =>{
 export const getDistance = async (myLon,myLat,placeLon,placeLat)=>{
     try{
         const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${myLat},${myLon}&destination=${placeLat},${placeLon}&key=${GOOGLE_API_KEY}`;
-        console.log(url)
         const {data} = await axios.get(url);
         return data;
     }catch(err){
@@ -62,8 +60,7 @@ export const getDistance = async (myLon,myLat,placeLon,placeLat)=>{
 
 export const getPlaceTypes = async (lon,lat,type)=>{
     try{
-        const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lon}&radius=50000&type=${type}&key=${GOOGLE_API_KEY}`;
-        console.log(url)
+        const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lon}&radius=2000&type=${type}&key=${GOOGLE_API_KEY}`;
         const {data} = await axios.get(url);
         return data;
     }catch(err){
