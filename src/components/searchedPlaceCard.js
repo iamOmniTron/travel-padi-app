@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 
 
-export default function PlaceCard({place}){
+export default function SearchedPlaceCard({place}){
     const [image,setImage] = useState("");
 
     const navigation = useNavigation();
@@ -21,17 +21,17 @@ export default function PlaceCard({place}){
 
 
     return(
-        <TouchableOpacity className="h-64 w-64 bg-white rounded-md mx-3 mb-2" style={{elevation:10}} onPress={()=>navigation.navigate("SearchedPlace",place)}>
-            <View className="h-3/4">
+        <TouchableOpacity className="h-24 w-11/12 flex flex-row bg-white rounded-md mx-3 mb-2" style={{elevation:10}} onPress={()=>navigation.navigate("SearchedPlace",place)}>
+            <View className="h-full w-2/5">
                 <Image source={{uri:image}} className="w-full h-full object-cover rounded-md"/>
             </View>
-            <View className="pl-2 pb-4">
-                <Text className="font-bold">
-                    {place.name}
+            <View className="px-2 pt-3 w-full">
+                <Text className="text-base truncate">
+                    {place.name.length > 10 ? `${place.name.slice(0,10)}...` : place.name}
                 </Text>
-                <View className="flex flex-row">
-                <Ionicons name="location" size={18} color={"red"}/>
-                <Text>{place.vicinity.length > 20 ? `${place.vicinity.slice(0,20)}...` : place.vicinity}</Text>
+                <View className="flex flex-row mt-5">
+                    <Ionicons name="location" size={20} color="red"/>
+                    <Text className="pl-2">{place.vicinity.length > 14 ? `${place.vicinity.slice(0,14)}...` : place.vicinity}</Text>
                 </View>
             </View>
         </TouchableOpacity>

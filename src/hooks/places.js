@@ -51,10 +51,23 @@ export const getDistance = async (myLon,myLat,placeLon,placeLat)=>{
         const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${myLat},${myLon}&destination=${placeLat},${placeLon}&key=${GOOGLE_API_KEY}`;
         console.log(url)
         const {data} = await axios.get(url);
-        console.log("result",data)
         return data;
     }catch(err){
         console.log(err);
         ToastError("Network error");
+    }
+}
+
+
+
+export const getPlaceTypes = async (lon,lat,type)=>{
+    try{
+        const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lon}&radius=50000&type=${type}&key=${GOOGLE_API_KEY}`;
+        console.log(url)
+        const {data} = await axios.get(url);
+        return data;
+    }catch(err){
+        console.log(err);
+        ToastError("Network Error");
     }
 }

@@ -15,7 +15,7 @@ export default function Profile({navigation}){
 
     const handleLogout = async()=>{
         try{
-            await AsyncStorage.removeItem(AUTH_TOKEN_NAME);
+            await AsyncStorage.clear();
             logout();
             ToastSuccess("Logout successful")
             return navigation.navigate("Login");

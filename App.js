@@ -17,6 +17,8 @@ import Place from './src/screens/place';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import currentLocationStore from './src/store/currentLocationStore';
 import RefreshContext from './src/context/refreshContext';
+import SearchedPlace from './src/components/searchedPlace';
+import SearchedCity from './src/components/searchedCity';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -63,6 +65,12 @@ const ButtomTabs = ()=>{
     <Tab.Screen name="Home" component={Home}/>
     <Tab.Screen name='Profile' component={Profile}/>
     <Tab.Screen name='Place' component={Place} options={{tabBarLabel:"",
+      tabBarButton:()=>null,
+      tabBarVisible:false}}/>
+    <Tab.Screen name='SearchedPlace' component={SearchedPlace} options={{tabBarLabel:"",
+      tabBarButton:()=>null,
+      tabBarVisible:false}}/>
+    <Tab.Screen name='SearchedCity' component={SearchedCity} options={{tabBarLabel:"",
       tabBarButton:()=>null,
       tabBarVisible:false}}/>
   </Tab.Navigator>
