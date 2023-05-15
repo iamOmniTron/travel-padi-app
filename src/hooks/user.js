@@ -31,7 +31,6 @@ export const useAddLocation =()=>{
             return response.data;
         }catch(err){
             ToastError(err.message??"Something went wrong")
-            console.log("error",err)
         }
     }
 
@@ -73,19 +72,13 @@ export const useRating = ()=>{
                     Authorization:`Bearer ${token._j}`
                 }
             });
-            console.log(response);
             if(!response){
                 ToastError("network error");
                 return;
             }
-            // if(!response.success){
-            //     ToastError(response.message);
-            //     return;
-            // }
             ToastSuccess("Review successfully");
             return response.message;
         }catch(err){
-            console.log("rating error",err)
             ToastError(err.message??"Something went wrong")
         }
     }
@@ -99,8 +92,6 @@ export const useFetchBookmarked = (flag)=>{
 
     useEffect(()=>{
         const getBookmarks = async ()=>{
-
-            console.log(token);
             try{
                 const {data:response} = await axios.get(`${SERVER_URL}/bookmarks`,{
                     headers:{
@@ -130,8 +121,6 @@ export const useFetchBookmarked = (flag)=>{
 export const useFetchRecommended = (flag)=>{
     const [places,setPlaces] = useState([]);
 
-    console.log(token)
-
     useEffect(()=>{
         const getRecommendeds = async ()=>{
             try{
@@ -140,7 +129,6 @@ export const useFetchRecommended = (flag)=>{
                         Authorization:`Bearer ${token._j}`
                     }
                 });
-                console.log("recommended",response);
                 if(!response){
                     ToastError("network error");
                     return;

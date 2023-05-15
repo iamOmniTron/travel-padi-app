@@ -26,10 +26,10 @@ export const MOCK_PLACES = [
 
 
 
-export default function RecommendedPlacesContainer(){
+export default function RecommendedPlacesContainer({route}){
 
-    const {flag} = useContext(RefreshContext);
-    const recommendedResults = useFetchRecommended(flag);
+    // const {flag} = useContext(RefreshContext);
+    const recommendedResults = useFetchRecommended(route);
     return(
         <View showsVerticalScrollIndicator={false} className="mb-10 px-3">
                 {

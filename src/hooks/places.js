@@ -5,11 +5,10 @@ import axios from "axios";
 
 export const getNearbyPlaces = async (lat,lon,type="tourist_attraction")=>{
         try{
-            const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%${lon}&radius=50000&type=${type}&key=${GOOGLE_API_KEY}`;
+            const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%${lon}&radius=5000&type=${type}&key=${GOOGLE_API_KEY}`;
             const {data} = await axios.get(url);
             return data?.results;
         }catch(err){
-            console.log(err);
             ToastError("network error");
         }
 }
@@ -21,7 +20,6 @@ export const getPlaceDetails = async (googlePlaceId)=>{
         const {data} = await axios.get(url);
         return data?.result;
     }catch(err){
-        console.log(err);
         ToastError("Network error");
     }
 }
@@ -39,7 +37,6 @@ export const getPlaceImage = async (photoRef,width) =>{
         });
         return request.responseURL;
     }catch(err){
-        console.log("error",err);
         ToastError("Network error");
     }
 }
@@ -51,7 +48,6 @@ export const getDistance = async (myLon,myLat,placeLon,placeLat)=>{
         const {data} = await axios.get(url);
         return data;
     }catch(err){
-        console.log(err);
         ToastError("Network error");
     }
 }
@@ -64,7 +60,6 @@ export const getPlaceTypes = async (lon,lat,type)=>{
         const {data} = await axios.get(url);
         return data;
     }catch(err){
-        console.log(err);
         ToastError("Network Error");
     }
 }

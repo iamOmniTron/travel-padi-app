@@ -7,10 +7,11 @@ import RefreshContext from "../context/refreshContext";
 
 
 
-export default function BookmarkedPlacesContainer(){
-    const {flag} = useContext(RefreshContext)
+export default function BookmarkedPlacesContainer({route}){
+    const bookmarks = useFetchBookmarked(route);
+    console.log(bookmarks);
     
-    const bookmarks = useFetchBookmarked(flag);
+    
     return(
         <ScrollView className="px-2 mt-4 flex mb-10" showsVerticalScrollIndicator={false}>
             {

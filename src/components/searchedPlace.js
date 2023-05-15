@@ -1,6 +1,6 @@
 import {SafeAreaView, Text,View,Image,Modal,TextInput,TouchableOpacity,ScrollView} from "react-native"
 import {useState,useEffect} from "react";
-import { getPlaceImage } from "../hooks/places";
+import { getPlaceDetails, getPlaceImage } from "../hooks/places";
 import { AirbnbRating } from "react-native-ratings";
 import { Ionicons } from "@expo/vector-icons";
 import { useAddLocation, useBookmark, useRating } from "../hooks/user";
@@ -16,7 +16,6 @@ export default function SearchedPlace({route}){
     const [currentPlaceRef,setCurrentPlaceRef] = useState("");
 
     const place = route.params;
-    console.log(place)
 
     const bookmark = useBookmark();
     const rate = useRating();
@@ -45,23 +44,12 @@ export default function SearchedPlace({route}){
         return;
     }
 
-    // useEffect(()=>{
-    //     const savePlace = async ()=>{
-    //          const payload = {
-    //             address:place.vicinity,
-    //             name:place.name,
-    //             category:place.types.find((t)=>!t.includes("_")).toString(),
-    //             imageURL:"",
-    //             placeId:place.place_id
-    //          }
-    //          const response = await 
-    //     }
-    // })
-
     useEffect(()=>{
         const getImage = async()=>{
             const {width,photo_reference} = place.photos[0];
             const pic = await getPlaceImage(photo_reference,width);
+            const locData = await getPlaceDetails(place?.place_id);
+            console.log("location Data",locData)
             setImage(pic);
             const payload = {
                 address:place.vicinity,
@@ -89,7 +77,7 @@ export default function SearchedPlace({route}){
             <View className="mt-3 px-3 flex">
                 <View className="flex flex-row items-center space-x-2">
                 <Text className="font-extrabold text-base">{place.name}</Text>
-                <Text className={`${place.opening_hours.open_now?"text-green-500":"text-red-500"}`}>{place.opening_hours && place.opening_hours.open_now? "Currently Open":"Currently Closed"}</Text>
+                {/* <Text className={`${place.opening_hours.open_now?"text-green-500":"text-red-500"}`}>{place.opening_hours && place.opening_hours.open_now? "Open":"Closed"}</Text> */}
                 </View>
                 <View className="mt-2 flex flex-row items-center">
                     <Text className="font-bold mr-3">{place.rating}</Text>

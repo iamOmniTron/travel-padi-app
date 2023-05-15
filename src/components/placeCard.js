@@ -23,7 +23,10 @@ export default function PlaceCard({place}){
     return(
         <TouchableOpacity className="h-64 w-64 bg-white rounded-md mx-3 mb-2" style={{elevation:10}} onPress={()=>navigation.navigate("SearchedPlace",place)}>
             <View className="h-3/4">
+                {
+                    image && 
                 <Image source={{uri:image}} className="w-full h-full object-cover rounded-md"/>
+                }
             </View>
             <View className="pl-2 pb-4">
                 <Text className="font-bold">
